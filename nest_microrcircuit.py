@@ -30,7 +30,7 @@ nest.ResetKernel()
 nest.set_verbosity('M_ERROR')
 nest.SetKernelStatus({"local_num_threads" : 12, "resolution":0.01})
 
-print "This is rank number {}".format(rank)
+print ("This is rank number {}".format(rank))
 
 
 # Load file with positions and connections data
@@ -69,11 +69,11 @@ f.close()
 ### Creating neuron populations ###
 # Create stimulus
 # Create a dictionary where keys = nrntype IDs, values = cell names (strings)
-id_2_cell_type = {val: key for key, val in cell_type_ID.iteritems()}
+id_2_cell_type = {val: key for key, val in cell_type_ID.items()}
 # Sort nrntype IDs 
 sorted_nrn_types = sorted(list(cell_type_ID.values()))
 # Create a dictionary; keys = cell names, values = lists to store neuron models
-neuron_models = {key: [] for key in cell_type_ID.iterkeys()}
+neuron_models = {key: [] for key in cell_type_ID.keys()}
 
 # At the moment, all the cells are LIF models;
 # with the only exception of Glomeruli (not cells, just modeled as
@@ -168,95 +168,95 @@ def connect_neuron(conn_mat, pre, post, syn_param, conn_param='one_to_one'):
 syn_param = {"model" : "static_synapse", "weight" : 20.0, "delay": 2.0}
 check_aa_goc = connect_neuron(aa_goc, neuron_models['granule'], neuron_models['golgi'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('granule-aa', 'golgi')
+if rank == 0: print ("Connections from {} to {} done".format('granule-aa', 'golgi'))
 
 # 2 - From granule-aa to Purkinje cells
 syn_param = {"model" : "static_synapse", "weight" : 75.0, "delay": 0.9}
 check_aa_pc = connect_neuron(aa_pc, neuron_models['granule'], neuron_models['purkinje'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('granule-aa', 'Purkinje')
+if rank == 0: print ("Connections from {} to {} done".format('granule-aa', 'Purkinje'))
 
 
 # 3 - From granule-parallel fibers to basket cells
 syn_param = {"model" : "static_synapse", "weight" : 0.2, "delay": 5.0} # w = 5.0
 check_pf_bc = connect_neuron(pf_bc, neuron_models['granule'], neuron_models['basket'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('granule-pfs', 'basket')
+if rank == 0: print ("Connections from {} to {} done".format('granule-pfs', 'basket'))
 
 # 4 - From granule-parallel fibers to Golgi cells
 syn_param = {"model" : "static_synapse", "weight" : 0.2, "delay": 5.0} # w = 5.0
 check_pf_goc = connect_neuron(pf_goc, neuron_models['granule'], neuron_models['golgi'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('granule-pfs', 'golgi')
+if rank == 0: print ("Connections from {} to {} done".format('granule-pfs', 'golgi'))
 
 # 5 - From granule-parallel fibers to Purkinje cells
 syn_param = {"model" : "static_synapse", "weight" : 0.2, "delay": 5.0} # w = 5.0 
 check_pf_pc = connect_neuron(pf_pc, neuron_models['granule'], neuron_models['purkinje'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('granule-pfs', 'Purkinje')
+if rank == 0: print ("Connections from {} to {} done".format('granule-pfs', 'Purkinje'))
 
 
 # 6 - From granule-parallel fibers to stellate cells
 syn_param = {"model" : "static_synapse", "weight" : 0.2, "delay": 5.0} # w = 5.0
 check_pf_sc = connect_neuron(pf_sc, neuron_models['granule'], neuron_models['stellate'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('granule-pfs', 'stellate')
+if rank == 0: print ("Connections from {} to {} done".format('granule-pfs', 'stellate'))
 
 
 # 7 - From glomeruli to Golgi cells
 syn_param = {"model" : "static_synapse", "weight" : 2.0, "delay": 4.0}
 check_glom_goc = connect_neuron(glom_goc, neuron_models['glomerulus'], neuron_models['golgi'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('glomerulus', 'golgi')
+if rank == 0: print ("Connections from {} to {} done".format('glomerulus', 'golgi'))
 
 
 # 8 - From glomeruli to granule cells
 syn_param = {"model" : "static_synapse", "weight" : 9.0, "delay": 4.0}
 check_glom_grc = connect_neuron(glom_grc, neuron_models['glomerulus'], neuron_models['granule'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('glomerulus', 'granule')
+if rank == 0: print ("Connections from {} to {} done".format('glomerulus', 'granule'))
 
 
 # # # 9 - From golgi cells to granules
 syn_param = {"model" : "static_synapse", "weight" : -5.0, "delay": 2.0}
 check_goc_grc = connect_neuron(goc_grc, neuron_models['golgi'], neuron_models['granule'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('golgi', 'granule')
+if rank == 0: print ("Connections from {} to {} done".format('golgi', 'granule'))
 
 
 # 10 - From basket to purkinje
 syn_param = {"model" : "static_synapse", "weight" : -10.0, "delay": 0.5}
 check_bc_pc = connect_neuron(bc_pc, neuron_models['basket'], neuron_models['purkinje'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('basket', 'purkinje')
+if rank == 0: print ("Connections from {} to {} done".format('basket', 'purkinje'))
 
 
 # 11 - From basket to basket (gap)
 syn_param = {"model" : "static_synapse", "weight" : -9.0, "delay": 4.0}
 check_bc_bc = connect_neuron(gj_bc, neuron_models['basket'], neuron_models['basket'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('basket', 'basket')
+if rank == 0: print ("Connections from {} to {} done".format('basket', 'basket'))
 
 
 # 12 - From stellate to purkinje
 syn_param = {"model" : "static_synapse", "weight" : -8.5, "delay": 5.0}
 check_sc_pc = connect_neuron(sc_pc, neuron_models['stellate'], neuron_models['purkinje'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('stellate', 'purkinje')
+if rank == 0: print ("Connections from {} to {} done".format('stellate', 'purkinje'))
 
 
 # 14 - From stellate to stellate (gap)
 syn_param = {"model" : "static_synapse", "weight" : -2.0, "delay": 1.0}
 check_sc_sc = connect_neuron(gj_sc, neuron_models['stellate'], neuron_models['stellate'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('stellate', 'stellate')
+if rank == 0: print ("Connections from {} to {} done".format('stellate', 'stellate'))
 
 
 # 15 - From Purkinje to deep cerebellar nuclei
 syn_param = {"model" : "static_synapse", "weight" : -0.03, "delay": 4.0} # w = -2.0?
 check_pc_dcn = connect_neuron(pc_dcn, neuron_models['purkinje'], neuron_models['dcn'], syn_param=syn_param)
 
-if rank == 0: print "Connections from {} to {} done".format('purkinje', 'dcn')
+if rank == 0: print ("Connections from {} to {} done".format('purkinje', 'dcn'))
 
 
 ### Define stimulus features ###
@@ -301,7 +301,7 @@ nest.Connect(stimulus, list(id_stim), conn_spec = 'one_to_one',
              syn_spec = {'weight': 1.0, 'delay': 0.05}) # The weight setted here is actually irrelevant
 
 
-print "Execution time (in seconds) is {}".format(time.time() - start_time)
+print ("Execution time (in seconds) is {}".format(time.time() - start_time))
 
 ## Record spikes from granule and Golgi cells
 grc_spikes = nest.Create("spike_detector",
@@ -328,7 +328,7 @@ nest.Connect(neuron_models['dcn'], dcn_spikes)
 
         
 if RECORD_VM:
-    print "Recording membrane voltage"
+    print ("Recording membrane voltage")
     grc_vm = nest.Create("multimeter")
     goc_vm = nest.Create("multimeter")
     pc_vm = nest.Create("multimeter")

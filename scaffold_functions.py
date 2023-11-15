@@ -34,7 +34,7 @@ def sublayer_partitioning(layer, cell_type, volume_base_size, *args):
 	vol_for_cell_radius = (3.0/4/np.pi*vol_for_cell)**(1/3.0)
 	cell_eps = (vol_for_cell_radius - cells_radius[cell_type])
 	cell_eps = np.array([cell_eps, cell_eps])
-	cell_sublayers = np.round(layer_thick/(1.5*vol_for_cell_radius))
+	cell_sublayers = np.round(layer_thick/(1.5*vol_for_cell_radius)).astype(np.int16)
 	height_cell_sublayer = layer_thick/cell_sublayers
 	cell_sublayers_roof = np.linspace(height_cell_sublayer, layer_thick, cell_sublayers)
 	cell_sublayers_roof = np.insert(cell_sublayers_roof, 0, 0)
@@ -72,7 +72,7 @@ def purkinje_placement(pc_extension_dend_tree, pc_in_volume):
 		because requires less/different arguments and exploits different algorithm'''
 	d = 2 * cells_radius['purkinje']
 	eps = (1/2.0)*(-(d+pc_extension_dend_tree)+((d+pc_extension_dend_tree)**(2)-4*((d*pc_extension_dend_tree)-(volume_base_size[0]*volume_base_size[1]/pc_in_volume)))**(1.0/2))
-	subl_z = np.linspace(cells_radius['purkinje'],volume_base_size[1]-cells_radius['purkinje']-(eps/2), volume_base_size[1]/(d+eps))
+	subl_z = np.linspace(cells_radius['purkinje'],volume_base_size[1]-cells_radius['purkinje']-(eps/2), int(volume_base_size[1]/(d+eps)))
 
 	offset = 0
 	delta = subl_z.shape[0]/((pc_extension_dend_tree/2)-1)
@@ -452,7 +452,7 @@ def connectome_grc_goc(first_granule, granules, golgicells, r_goc_vol, OoB_value
 
 		# parallel fiber and GoC connections
 
-		good_grc = np.delete(granules, (connectedAA - first_granule), 0)		
+		good_grc = np.delete(granules, (connectedAA - first_granule).astype(np.int16), 0)		
 		intersections = (good_grc[:,2]).__ge__(i[2]-r_goc_vol) & (good_grc[:,2]).__le__(i[2]+r_goc_vol)
 		good_pf = np.where(intersections==True)[0]				# finds indexes of granules that can potentially be connected
 		connected_pf = np.random.choice(good_pf, tot_conn-len(connectedAA), replace = False)	# randomly select 1200 parallel fibers to be connected with a GoC
@@ -784,7 +784,7 @@ def connectome_gj_goc(r_goc_vol, GoCaxon_x, GoCaxon_y, GoCaxon_z, golgicells):
 
 		# do not consider the current cell in the connectivity calculus
 		a = np.where(golgicells[:,0]==i[0])[0]
-		del_goc = np.delete(golgicells[:,0], a)
+		del_goc = np.delete(golgicells[:,0], a.astype(np.int16))
 		potential_goc = del_goc.astype(int)
 
 		bool_matrix = np.zeros(((golgicells.shape[0])-1, 3))

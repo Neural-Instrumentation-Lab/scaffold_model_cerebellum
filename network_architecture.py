@@ -67,9 +67,9 @@ adapt_positions()
 
 ######## Prepare data for placement saving in .hdf5 format #######
 # Progressive indexing of neurons
-cel_num_vec = sorted(list(cell_type_ID.itervalues()))
+cel_num_vec = sorted(list(cell_type_ID.values()))
 
-cellID2type = {val: key for key, val in cell_type_ID.iteritems()}
+cellID2type = {val: key for key, val in cell_type_ID.items()}
 #### TEMP ####
 # cel_num_vec.append(8)
 # cellID2type[8]= 'IO'
@@ -92,7 +92,7 @@ for n in cel_num_vec:
 	data_matrix = np.concatenate((data_matrix, pos_id))
 
 data_matrix = data_matrix[1::]
-data_matrix[:,0] += 1
+# data_matrix[:,0] += 1			# OBEID 20231115 this line makes line 147 crash bc neuron types are out of range
 
 
 
