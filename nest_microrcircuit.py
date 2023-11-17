@@ -81,7 +81,7 @@ neuron_models = {key: [] for key in cell_type_ID.keys()}
 for cell_id in sorted_nrn_types:
     cell_name = id_2_cell_type[cell_id] 
     if cell_name  != 'glomerulus':
-        if cell_name not in nest.Models():
+        if cell_name not in nest.node_models: #Models(): OBEID
             nest.CopyModel('iaf_cond_exp', cell_name)
         if cell_name == 'golgi':
             nest.SetDefaults(cell_name, {
@@ -141,7 +141,7 @@ for cell_id in sorted_nrn_types:
                 'tau_syn_in': 13.6})
 
     else:
-        if cell_name not in nest.Models():
+        if cell_name not in nest.node_models: #Models(): OBEID
             nest.CopyModel('parrot_neuron', cell_name)
             
     cell_pos = positions[positions[:,1]==cell_id, :]
